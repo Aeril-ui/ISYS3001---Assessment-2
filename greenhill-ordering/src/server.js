@@ -1,5 +1,8 @@
 const express = require("express");
 const config = require("./config");
+const { getDb } = require("./db");
+
+getDb();
 
 const app = express();
 const port = config.port;

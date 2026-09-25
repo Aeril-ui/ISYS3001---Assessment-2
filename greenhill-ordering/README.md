@@ -34,6 +34,10 @@ You can set the same variables in your shell instead of using a `.env` file. The
 
 If a variable is missing or `PORT` is invalid, the app prints an error and exits.
 
+## Database
+
+On startup the app creates the SQLite file at `DATABASE_PATH` (if needed) and applies the schema in `src/schema.sql`: members, products, rounds, orders, and order lines. No sample data is loaded yet.
+
 ## Start
 
 ```bash
