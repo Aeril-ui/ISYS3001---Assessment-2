@@ -1,7 +1,8 @@
 const express = require("express");
+const config = require("./config");
 
 const app = express();
-const port = 3000;
+const port = config.port;
 
 app.get("/", (req, res) => {
   res.type("text").send("Greenhill ordering is running.");
