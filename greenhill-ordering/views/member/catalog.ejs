@@ -1,0 +1,68 @@
+<%- include('../partials/header', { title: 'Order', user }) %>
+
+<h1>Weekly order</h1>
+
+<% if (message) { %>
+  <p class="notice"><%= message %></p>
+<% } %>
+
+<% if (error) { %>
+  <p class="error"><%= error %></p>
+<% } %>
+
+<% if (openRound) { %>
+  <section>
+    <h2>Products (round <%= openRound.id %>, open)</h2>
+    <% if (products.length === 0) { %>
+      <p>No products available this round.</p>
+    <% } else { %>
+      <ul class="product-list">
+        <% products.forEach(function (product) { %>
+          <li>
+            <strong><%= product.name %></strong>
+            — $<%= product.sell_price.toFixed(2) %>
+            <% if (product.sell_method === 'kilogram') { %>(per kg)<% } else { %>(each)<% } %>
+            <form method="post" action="/member/order/lines" class="inline-order-form">
+              <input type="hidden" name="product_id" value="<%= product.id %>" />
+              <label>
+                Qty
+                <input name="quantity" type="number" min="0.01" step="<%= product.sell_method === 'unit' ? '1' : '0.01' %>" required />
+              </label>
+              <button type="submit">Add to order</button>
+            </form>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+
+  <section>
+    <h2>Your order</h2>
+    <% if (lines.length === 0) { %>
+      <p>No lines yet. Add products above.</p>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Line total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% lines.forEach(function (line) { %>
+            <tr>
+              <td><%= line.product_name %></td>
+              <td><%= line.quantity %><% if (line.sell_method === 'kilogram') { %> kg<% } %></td>
+              <td>$<%= line.unit_price.toFixed(2) %></td>
+              <td>$<%= (line.quantity * line.unit_price).toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+<% } %>
+
+<%- include('../partials/footer') %>

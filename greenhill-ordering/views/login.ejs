@@ -1,0 +1,23 @@
+<%- include('partials/header', { title: 'Log in', user: null }) %>
+
+<h1>Log in</h1>
+
+<% if (error) { %>
+  <p class="error"><%= error %></p>
+<% } %>
+
+<form method="post" action="/login" class="stack-form">
+  <label>
+    Username
+    <input name="username" autocomplete="username" required />
+  </label>
+  <label>
+    Password
+    <input name="password" type="password" autocomplete="current-password" required />
+  </label>
+  <button type="submit">Sign in</button>
+</form>
+
+<p class="hint">Demo: member / member or coordinator / coordinator</p>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,91 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: #f6f7f9;
+  color: #1a1a1a;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: #1f5f3a;
+  color: #fff;
+}
+
+.site-header .user-meta {
+  margin-left: auto;
+}
+
+.content {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.error {
+  color: #9b1c1c;
+}
+
+.notice {
+  color: #5c4b00;
+  background: #fff8da;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+}
+
+.stack-form label {
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.stack-form input {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  margin-top: 0.25rem;
+}
+
+.inline-form {
+  display: inline;
+  margin: 0;
+}
+
+.product-list {
+  list-style: none;
+  padding: 0;
+}
+
+.product-list li {
+  background: #fff;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+}
+
+.inline-order-form {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.hint {
+  color: #555;
+  font-size: 0.9rem;
+}

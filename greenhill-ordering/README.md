@@ -62,6 +62,15 @@ Run pricing tests:
 npm test
 ```
 
+## Member ordering (Part 7)
+
+After `npm start`, open `http://localhost:3000` (or your `PORT`).
+
+- **Log in** with demo users above.
+- **Members** see the product catalog for the open round, or a message when no round is open. Withdrawn products are hidden.
+- **Members** add lines to their order; lines persist for that member and round. Ordering is blocked when the round is not open.
+- **Coordinators** go to `/coordinator` (placeholder until Part 9). Members get **403** on coordinator routes.
+
 ## Start
 
 ```bash
