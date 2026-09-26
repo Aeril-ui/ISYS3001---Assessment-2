@@ -6,11 +6,15 @@
   <p class="notice"><%= message %></p>
 <% } %>
 
+<% if (readOnlyReason) { %>
+  <p class="notice"><%= readOnlyReason %></p>
+<% } %>
+
 <% if (error) { %>
   <p class="error"><%= error %></p>
 <% } %>
 
-<% if (openRound) { %>
+<% if (openRound && canEdit) { %>
   <section>
     <h2>Products (round <%= openRound.id %>, open)</h2>
     <% if (products.length === 0) { %>
@@ -35,34 +39,57 @@
       </ul>
     <% } %>
   </section>
-
-  <section>
-    <h2>Your order</h2>
-    <% if (lines.length === 0) { %>
-      <p>No lines yet. Add products above.</p>
-    <% } else { %>
-      <table>
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Line total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% lines.forEach(function (line) { %>
-            <tr>
-              <td><%= line.product_name %></td>
-              <td><%= line.quantity %><% if (line.sell_method === 'kilogram') { %> kg<% } %></td>
-              <td>$<%= line.unit_price.toFixed(2) %></td>
-              <td>$<%= (line.quantity * line.unit_price).toFixed(2) %></td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
-    <% } %>
-  </section>
 <% } %>
+
+<section>
+  <h2>Your order</h2>
+  <% if (lines.length === 0) { %>
+    <p>No lines yet.<% if (canEdit) { %> Add products above.<% } %></p>
+  <% } else { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Line total</th>
+          <% if (canEdit) { %><th>Actions</th><% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% lines.forEach(function (line) { %>
+          <tr>
+            <td><%= line.product_name %></td>
+            <td>
+              <% if (canEdit) { %>
+                <form method="post" action="/member/order/lines/<%= line.id %>/update" class="inline-order-form">
+                  <input name="quantity" type="number" min="0.01" step="<%= line.sell_method === 'unit' ? '1' : '0.01' %>" value="<%= line.quantity %>" required />
+                  <button type="submit">Update</button>
+                </form>
+              <% } else { %>
+                <%= line.quantity %><% if (line.sell_method === 'kilogram') { %> kg<% } %>
+              <% } %>
+            </td>
+            <td>$<%= line.unit_price.toFixed(2) %></td>
+            <td>$<%= (line.quantity * line.unit_price).toFixed(2) %></td>
+            <% if (canEdit) { %>
+              <td>
+                <form method="post" action="/member/order/lines/<%= line.id %>/remove">
+                  <button type="submit">Remove</button>
+                </form>
+              </td>
+            <% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <% if (canEdit && order) { %>
+    <form method="post" action="/member/order/cancel" class="cancel-form" onsubmit="return confirm('Cancel your whole order for this round?');">
+      <button type="submit" class="danger">Cancel entire order</button>
+    </form>
+  <% } %>
+</section>
 
 <%- include('../partials/footer') %>

@@ -71,6 +71,10 @@ After `npm start`, open `http://localhost:3000` (or your `PORT`).
 - **Members** add lines to their order; lines persist for that member and round. Ordering is blocked when the round is not open.
 - **Coordinators** go to `/coordinator` (placeholder until Part 9). Members get **403** on coordinator routes.
 
+## Edit and cancel (Part 8)
+
+While the round is **open**, members can **update** quantity, **remove** a line, or **cancel** the whole order. When the round is **closed**, the last order is shown **read-only** (no edits). Changes apply only to the logged-in member’s order.
+
 ## Start
 
 ```bash

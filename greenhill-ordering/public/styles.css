@@ -89,3 +89,16 @@ td {
   color: #555;
   font-size: 0.9rem;
 }
+
+.cancel-form {
+  margin-top: 1rem;
+}
+
+button.danger {
+  background: #9b1c1c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
