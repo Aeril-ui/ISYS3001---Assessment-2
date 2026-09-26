@@ -36,7 +36,16 @@ If a variable is missing or `PORT` is invalid, the app prints an error and exits
 
 ## Database
 
-On startup the app creates the SQLite file at `DATABASE_PATH` (if needed) and applies the schema in `src/schema.sql`: members, products, rounds, orders, and order lines. No sample data is loaded yet.
+On startup the app creates the SQLite file at `DATABASE_PATH` (if needed), applies `src/schema.sql`, and seeds demo data **once** when there are no rounds yet.
+
+Demo logins (plain text, for local development only):
+
+| Username | Password | Role |
+| --- | --- | --- |
+| `member` | `member` | member (linked to sample household GH-101) |
+| `coordinator` | `coordinator` | coordinator |
+
+Seed includes one **open** round, four sample products (unit and kilogram), two members, and the users above. To re-seed from scratch, delete the SQLite file and run `npm start` or `npm run seed`.
 
 ## Start
 
