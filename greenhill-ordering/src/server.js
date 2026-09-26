@@ -1,8 +1,10 @@
 const express = require("express");
 const config = require("./config");
 const { getDb } = require("./db");
+const { seedIfEmpty } = require("./seed");
 
-getDb();
+const db = getDb();
+seedIfEmpty(db);
 
 const app = express();
 const port = config.port;

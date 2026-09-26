@@ -5,7 +5,8 @@
   "description": "Greenhill Food Co-op weekly ordering app",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "seed": "node scripts/seed.js"
   },
   "engines": {
     "node": ">=20"
