@@ -47,6 +47,15 @@ Demo logins (plain text, for local development only):
 
 Seed includes one **open** round, four sample products (unit and kilogram), two members, and the users above. To re-seed from scratch, delete the SQLite file and run `npm start` or `npm run seed`.
 
+## Pricing
+
+`src/pricing.js` calculates order line totals:
+
+- **Unit** products: whole-number quantity × sell price.
+- **Kilogram** products: decimal kilograms × price per kg (e.g. `0.25` for 250 g).
+
+When a line is saved, the product’s current sell price is copied to `order_lines.unit_price` so later product edits do not change past orders.
+
 ## Start
 
 ```bash
