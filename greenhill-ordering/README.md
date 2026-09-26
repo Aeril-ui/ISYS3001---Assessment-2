@@ -56,6 +56,12 @@ Seed includes one **open** round, four sample products (unit and kilogram), two 
 
 When a line is saved, the product’s current sell price is copied to `order_lines.unit_price` so later product edits do not change past orders.
 
+Run pricing tests:
+
+```bash
+npm test
+```
+
 ## Start
 
 ```bash
