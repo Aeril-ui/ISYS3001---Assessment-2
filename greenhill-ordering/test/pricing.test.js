@@ -29,3 +29,24 @@ test("per-kilogram: decimal kg times price per kg; unit_price stored on line", (
   assert.equal(line.unit_price, 4.5);
   assert.equal(line.line_total, 1.13);
 });
+
+test("per-unit: rejects decimal quantities", () => {
+  const product = {
+    sell_method: "unit",
+    sell_price: 8,
+    is_withdrawn: 0,
+  };
+
+  assert.throws(() => buildOrderLine(product, 1.5), /whole number/);
+});
+
+test("withdrawn products cannot be added to an order", () => {
+  const product = {
+    sell_method: "unit",
+    sell_price: 8,
+    is_withdrawn: 1,
+  };
+
+  assert.throws(() => buildOrderLine(product, 1), /not available/);
+});
+

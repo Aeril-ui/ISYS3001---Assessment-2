@@ -246,4 +246,5 @@ router.post("/order/cancel", (req, res) => {
   }
 });
 
+router.assertEditable = assertEditable;
 module.exports = router;
