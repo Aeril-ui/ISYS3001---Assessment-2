@@ -30,7 +30,7 @@
               <input type="hidden" name="product_id" value="<%= product.id %>" />
               <label>
                 Qty
-                <input name="quantity" type="number" min="0.01" step="<%= product.sell_method === 'unit' ? '1' : '0.01' %>" required />
+                <input name="quantity" type="number" min="<%= product.sell_method === 'unit' ? '1' : '0.01' %>" step="<%= product.sell_method === 'unit' ? '1' : '0.01' %>" required />
               </label>
               <button type="submit">Add to order</button>
             </form>
@@ -63,7 +63,7 @@
             <td>
               <% if (canEdit) { %>
                 <form method="post" action="/member/order/lines/<%= line.id %>/update" class="inline-order-form">
-                  <input name="quantity" type="number" min="0.01" step="<%= line.sell_method === 'unit' ? '1' : '0.01' %>" value="<%= line.quantity %>" required />
+                  <input name="quantity" type="number" min="<%= line.sell_method === 'unit' ? '1' : '0.01' %>" step="<%= line.sell_method === 'unit' ? '1' : '0.01' %>" value="<%= line.quantity %>" required />
                   <button type="submit">Update</button>
                 </form>
               <% } else { %>
