@@ -145,6 +145,18 @@ function createDb() {
         };
       }
 
+      if (compact.startsWith("UPDATE orders") && compact.includes("SET is_cancelled = 0")) {
+        return {
+          run(orderId) {
+            const order = state.orders.find((item) => item.id === orderId);
+            if (order) {
+              order.is_cancelled = 0;
+            }
+            return { changes: 1 };
+          },
+        };
+      }
+
       if (compact === "DELETE FROM order_lines WHERE order_id = ?") {
         return {
           run(orderId) {
@@ -240,4 +252,23 @@ test("user story 3 restricts modifications when order is cancelled or missing", 
     /no active order to change/
   );
 });
+
+test("user story 3 allows a member to start a new order after cancelling while the round is open", () => {
+  const db = createDb();
+  const order = getOrCreateOrder(db, 1, 1);
+
+  addOrUpdateLine(db, order.id, 1, 2);
+  cancelOrder(db, order.id, 1);
+  assert.equal(getActiveOrder(db, 1, 1).is_cancelled, 1);
+
+  // Re-ordering while round is open re-activates the order and creates fresh lines
+  const reorder = getOrCreateOrder(db, 1, 1);
+  assert.equal(reorder.is_cancelled, 0);
+  addOrUpdateLine(db, reorder.id, 1, 3);
+
+  const lines = listOrderLines(db, reorder.id);
+  assert.equal(lines.length, 1);
+  assert.equal(lines[0].quantity, 3);
+});
+
 

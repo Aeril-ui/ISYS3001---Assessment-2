@@ -14,7 +14,7 @@
   <p class="error"><%= error %></p>
 <% } %>
 
-<% if (openRound && canEdit) { %>
+<% if (openRound) { %>
   <section>
     <h2>Products (round <%= openRound.id %>, open)</h2>
     <% if (products.length === 0) { %>
@@ -85,7 +85,7 @@
     </table>
   <% } %>
 
-  <% if (canEdit && order) { %>
+  <% if (canEdit && order && !order.is_cancelled && lines.length > 0) { %>
     <form method="post" action="/member/order/cancel" class="cancel-form" onsubmit="return confirm('Cancel your whole order for this round?');">
       <button type="submit" class="danger">Cancel entire order</button>
     </form>

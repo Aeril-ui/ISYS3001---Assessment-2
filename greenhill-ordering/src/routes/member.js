@@ -29,7 +29,7 @@ function loadMemberContext(db, memberId) {
     order = getActiveOrder(db, memberId, openRound.id);
 
     if (order && order.is_cancelled) {
-      readOnlyReason = "This order was cancelled.";
+      readOnlyReason = "Your previous order for this round was cancelled. You can add products below to start a new order.";
     } else {
       canEdit = true;
       if (order) {
@@ -41,7 +41,9 @@ function loadMemberContext(db, memberId) {
 
     if (order) {
       lines = listOrderLines(db, order.id);
-      readOnlyReason = "The ordering round is closed. Your order is read-only.";
+      readOnlyReason = order.is_cancelled
+        ? "The ordering round is closed. This order was cancelled."
+        : "The ordering round is closed. Your order is read-only.";
     }
   }
 

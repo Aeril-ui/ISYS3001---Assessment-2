@@ -14,7 +14,12 @@ function getOrCreateOrder(db, memberId, roundId) {
   const existing = getActiveOrder(db, memberId, roundId);
   if (existing) {
     if (existing.is_cancelled) {
-      throw new Error("This order was cancelled.");
+      db.prepare(`
+        UPDATE orders
+        SET is_cancelled = 0
+        WHERE id = ?
+      `).run(existing.id);
+      existing.is_cancelled = 0;
     }
     return existing;
   }
