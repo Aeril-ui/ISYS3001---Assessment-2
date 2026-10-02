@@ -1,14 +1,19 @@
-# Greenhill ordering
+# Greenhill Ordering
 
-Small Node and Express app for the Greenhill Food Co-op weekly grocery orders.
+Small Node.js and Express web application for the Greenhill Food Co-op weekly grocery ordering case study.
 
-## Prerequisites
+## Assessment Focus
+
+The selected assessment feature is Seed User Story 3: a member can change or cancel an order while the ordering round is open, and a closed round is read-only.
+
+Supporting functionality includes member login, product viewing, first-order creation, SQLite persistence, unit and kilogram pricing, and role-based access.
+
+## Requirements
 
 - Node.js 20 or newer
+- npm
 
 ## Install
-
-From this folder:
 
 ```bash
 npm install
@@ -16,64 +21,21 @@ npm install
 
 ## Configure
 
-Copy the sample file and edit values for your machine:
+Create a local `.env` file from `.env.example`.
 
 ```bash
 cp .env.example .env
 ```
 
-Required variables:
+Required values:
 
 | Variable | Purpose |
 | --- | --- |
-| `PORT` | HTTP port (e.g. `3000`) |
-| `SESSION_SECRET` | Secret for sessions (login in a later part) |
-| `DATABASE_PATH` | Path to the SQLite file |
+| `PORT` | Web server port |
+| `SESSION_SECRET` | Express session secret |
+| `DATABASE_PATH` | SQLite database path |
 
-You can set the same variables in your shell instead of using a `.env` file. The app loads `.env` automatically when it exists. `.env` is not committed to Git.
-
-If a variable is missing or `PORT` is invalid, the app prints an error and exits.
-
-## Database
-
-On startup the app creates the SQLite file at `DATABASE_PATH` (if needed), applies `src/schema.sql`, and seeds demo data **once** when there are no rounds yet.
-
-Demo logins (plain text, for local development only):
-
-| Username | Password | Role |
-| --- | --- | --- |
-| `member` | `member` | member (linked to sample household GH-101) |
-| `coordinator` | `coordinator` | coordinator |
-
-Seed includes one **open** round, four sample products (unit and kilogram), two members, and the users above. To re-seed from scratch, delete the SQLite file and run `npm start` or `npm run seed`.
-
-## Pricing
-
-`src/pricing.js` calculates order line totals:
-
-- **Unit** products: whole-number quantity × sell price.
-- **Kilogram** products: decimal kilograms × price per kg (e.g. `0.25` for 250 g).
-
-When a line is saved, the product’s current sell price is copied to `order_lines.unit_price` so later product edits do not change past orders.
-
-Run pricing tests:
-
-```bash
-npm test
-```
-
-## Member ordering (Part 7)
-
-After `npm start`, open `http://localhost:3000` (or your `PORT`).
-
-- **Log in** with demo users above.
-- **Members** see the product catalog for the open round, or a message when no round is open. Withdrawn products are hidden.
-- **Members** add lines to their order; lines persist for that member and round. Ordering is blocked when the round is not open.
-- **Coordinators** go to `/coordinator` (placeholder until Part 9). Members get **403** on coordinator routes.
-
-## Edit and cancel (Part 8)
-
-While the round is **open**, members can **update** quantity, **remove** a line, or **cancel** the whole order. When the round is **closed**, the last order is shown **read-only** (no edits). Changes apply only to the logged-in member’s order.
+The local `.env` file, SQLite database files and `node_modules` are excluded from Git.
 
 ## Start
 
@@ -81,4 +43,34 @@ While the round is **open**, members can **update** quantity, **remove** a line,
 npm start
 ```
 
-Open the URL for your `PORT` (default in `.env.example` is `http://localhost:3000`).
+Open `http://localhost:3000` when using the sample port.
+
+Demo users:
+
+| Username | Password | Role |
+| --- | --- | --- |
+| `member` | `member` | Member |
+| `coordinator` | `coordinator` | Coordinator |
+
+The application creates the SQLite schema and seeds demo data when the database has no ordering round.
+
+## User Story 3 Verification
+
+1. Log in as `member`.
+2. Add a product to create the member order.
+3. Change the quantity and select Update.
+4. Remove an order line.
+5. Add a product again and select Cancel entire order.
+6. For closed-round verification, change the round status to `closed` in the local database and reload the member page. The order is displayed read-only.
+
+## Tests
+
+```bash
+npm test
+```
+
+The automated test suite covers unit pricing, kilogram pricing, order-line update and removal, and whole-order cancellation.
+
+## Repository Configuration
+
+The project uses feature branches and `main`. Application settings are loaded from environment variables through `src/config.js`. `.env.example` documents the required configuration without committing local secrets. Dependencies are reproducible from `package.json` and `package-lock.json`.
